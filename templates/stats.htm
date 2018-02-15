@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stats!</title>
+  <script>
+    var myXhr = new XMLHttpRequest();
+
+    var messageLabel = '';
+
+    function updateMessage(msg) {
+        var message = document.getElementById('statShow');
+        message.innerHTML = messageLabel + ': ' + msg;
+
+    }
+
+    function xhrCallback() {
+      if(myXhr.readyState === XMLHttpRequest.DONE && myXhr.status === 200) {
+        console.log('XHR Ready!', myXhr);
+        updateMessage(myXhr.responseText);
+      }
+    };
+
+    myXhr.onreadystatechange = xhrCallback;
+
+    function fetch(url) {
+      myXhr.open('GET', url, true);
+      myXhr.send();
+    }
+
+    function getCpu() {
+      messageLabel = 'CPU';
+      console.log('getCpu');
+      fetch('/cpu');
+    }
+
+    function getDisk() {
+      messageLabel = 'Disk';
+      console.log('getDisk');
+      fetch('/disk');
+    }
+
+    function getMemory() {
+      messageLabel = 'Memory';
+      console.log('getMemory');
+      fetch('/memory');
+    }
+  </script>
+</head>
+<body>
+ <h1>Stats!</h1>
+ <p>
+   <button onclick=getCpu()>CPU</button>
+   <button onclick=getDisk()>Disk</button>
+   <button onclick=getMemory()>Memory</button>
+ </p>
+ <div name='statShow' id='statShow'>...</div>
+</body>
+</html>
